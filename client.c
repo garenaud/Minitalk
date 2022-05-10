@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: grenaud- <grenaud-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 11:04:30 by grenaud-          #+#    #+#             */
-/*   Updated: 2022/04/27 16:03:53 by grenaud-         ###   ########.fr       */
+/*   Updated: 2022/05/09 22:52:03 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,10 @@
 
 static void	action(int sig)
 {
-	static int	received;
+	static int	received = 0;
 
-	received = 0;
 	if (sig == SIGUSR1)
-		received++;
+		++received;
 	else
 	{
 		ft_putnbr_fd(received, 1);
@@ -30,7 +29,7 @@ static void	action(int sig)
 	}
 }
 
-static void	sending(int pid, char *str)
+static void	mt_kill(int pid, char *str)
 {
 	int		i;
 	char	c;

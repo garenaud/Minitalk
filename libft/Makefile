@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: grenaud- <grenaud-@student.42.fr>          +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/01 15:33:28 by grenaud-          #+#    #+#              #
-#    Updated: 2022/03/23 14:58:21 by grenaud-         ###   ########.fr        #
+#    Updated: 2022/05/09 22:55:45 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC_DIR		=	./
+NAME = libft.a
 
-SRCS		=	ft_atoi.c\
+SOURCES		=	ft_atoi.c\
 				ft_bzero.c\
 				ft_calloc.c\
 				ft_isalnum.c\
@@ -50,7 +50,7 @@ SRCS		=	ft_atoi.c\
 				ft_striteri.c\
 				get_next_line.c\
 
-BONUS_SRC	=	ft_lstnew.c\
+BSOURCES	=	ft_lstnew.c\
 				ft_lstadd_front.c\
 				ft_lstsize.c\
 				ft_lstlast.c\
@@ -60,35 +60,29 @@ BONUS_SRC	=	ft_lstnew.c\
 				ft_lstiter.c\
 				ft_lstmap.c\
 
-OBJS        =	${SRCS:.c=.o}
+OBJECTS = $(SOURCES:.c=.o)
+BOBJECTS = $(BSOURCES:.c=.o)
 
-BONUS_OBJS	=	${BONUS_SRC:.c=.o}
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror
 
-NAME        = libft.a
+all: $(NAME)
 
-CC            = gcc
+$(NAME): $(OBJECTS)
+	$(AR) -r $@ $?
 
-CFLAGS        = -Wall -Wextra -Werror
+bonus: $(OBJECTS) $(BOBJECTS)
+	$(AR) -r $(NAME) $?
 
-AR_RCS        = ar rcs
-
-all:            ${NAME}
-
-.c.o:
-				@${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
-
-${NAME}:        ${OBJS}
-				@${AR_RCS} ${NAME} ${OBJS}
-
-bonus:			${BONUS_OBJS}
-				@${AR_RCS} ${NAME} ${BONUS_OBJS}
+%.o: %.c
+	$(CC) -c $(CFLAGS) $?
 
 clean:
-				@rm -f ${OBJS} ${BONUS_OBJS}
+	rm -f $(OBJECTS) $(BOBJECTS)
 
-fclean:			clean
-				@rm -f ${NAME}
+fclean: clean
+	rm -f $(NAME)
 
-re:                fclean all
+re: fclean all
 
-.PHONY:            all clean fclean re bonus
+.PHONY: all bonus clean fclean re
